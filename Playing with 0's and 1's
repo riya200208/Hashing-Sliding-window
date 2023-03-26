@@ -1,0 +1,74 @@
+//Link: https://drive.google.com/file/d/1MSIz2WrYvbgM2JVbANl0DpAfbExmThSi/view
+//Link : https://drive.google.com/file/d/1diOn-zt7p0u1BMYXXgz6gJl9hVhlOpmS/view
+//source : https://ideone.com/EGfxXg
+
+
+
+import java.io.*;
+import java.util.*;
+
+class GFG 
+{
+
+  // Function to find number of subarrays
+  // with sum equal to 0.
+  public static int
+    CountSubStringsWithZeroSum(ArrayList<Integer> arr)
+  {
+    int n = arr.size();
+
+    // Creating default dictionary with default val
+    // zero. It stores the count of previous subarrays
+    // sum from 0 to i for every i in range(0,
+    // curr_index-1)
+    HashMap<Integer, Integer> prevSum
+      = new HashMap<Integer, Integer>();
+    for (int i = 0; i < n; i++) {
+      prevSum.put(i, 0);
+    }
+    int count = 0;
+    int currsum = 0;
+
+    for (int i = 0; i < n; i++) {
+      currsum += arr.get(i);
+      if (currsum == 0)
+        count += 1;
+
+      if (prevSum.containsKey(currsum) != false)
+        count += prevSum.get(currsum);
+
+      if (prevSum.get(currsum) == null)
+        prevSum.put(currsum, 0);
+
+      prevSum.put(currsum, prevSum.get(currsum) + 1);
+    }
+    return count;
+  }
+
+  // Function to count subarrays with
+  // number of 0's and 1's in ratio of X:Y
+  public static int
+    countSubStringsWith01InRatioXY(String S, int X, int Y)
+  {
+    // First change 0's to -Y 1's to X
+    ArrayList<Integer> arr = new ArrayList<Integer>();
+    for (int i = 0; i < S.length(); i++) {
+      if (S.charAt(i) == '0')
+        arr.add(-1 * Y);
+      else
+        arr.add(X);
+    }
+    return CountSubStringsWithZeroSum(arr);
+  }
+
+  public static void main(String[] args)
+  {
+    String S = "010011010100";
+    int X = 3;
+    int Y = 2;
+
+    // Function Call
+    System.out.println(
+      countSubStringsWith01InRatioXY(S, X, Y));
+  }
+}
